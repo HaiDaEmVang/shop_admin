@@ -7,7 +7,7 @@ const ListProduct = () => {
   const [allproducts, setAllProducts] = useState([]);
 
   const fetchInfo = () => {
-    fetch(`${backend_url}/allproducts`)
+    fetch(`${backend_url}/allproducts/all`)
       .then((res) => res.json())
       .then((data) => setAllProducts(data))
   }
