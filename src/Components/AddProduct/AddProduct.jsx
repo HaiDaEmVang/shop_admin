@@ -1,19 +1,22 @@
 import React, { useState } from "react";
 import "./AddProduct.css";
+import { IoMdClose } from "react-icons/io";
 import upload_area from "../Assets/upload_area.svg";
 import { backend_url } from "../../App";
 
 const AddProduct = () => {
 
-  const [image, setImage] = useState(false);
+  const [image, setImage] = useState([]);
   const [productDetails, setProductDetails] = useState({
     name: "",
     description: "",
-    image: "",
+    image: [],
     category: "women",
     new_price: "",
     old_price: ""
   });
+
+  
 
   const AddProduct = async () => {
 
@@ -21,7 +24,9 @@ const AddProduct = () => {
     let product = productDetails;
 
     let formData = new FormData();
-    formData.append('product', image);
+    image.length !==0 ? image.forEach(item => formData.append('product', item)): 
+    formData.append('product', null)
+
 
     await fetch(`${backend_url}/upload`, {
       method: 'POST',
@@ -82,10 +87,18 @@ const AddProduct = () => {
       </div>
       <div className="addproduct-itemfield">
         <p>Product image</p>
+        <div className="flex">
+          {image.length !== 0 ? image.map((item, i) => (
+            <span key={i} className="relative mr-3 mb-3 mt-3 rounded-md drop-shadow-md overflow-hidden group w-[127px] h-[129px]">
+              <img className="w-full h-full object-cover" src={URL.createObjectURL(item)} alt="" />
+              <IoMdClose className="absolute top-1 right-1 text-black cursor-pointer hidden group-hover:block" onClick={()=>setImage(pre => pre.filter(p => p!==item))}/>
+            </span>
+            )): ""}
+        </div>
         <label htmlFor="file-input">
-          <img className="addproduct-thumbnail-img" src={!image ? upload_area : URL.createObjectURL(image)} alt="" />
+          <img  className="addproduct-thumcbnail-img" src={upload_area} alt="" />
         </label>
-        <input onChange={(e) => setImage(e.target.files[0])} type="file" name="image" id="file-input" accept="image/*" hidden />
+        <input onChange={(e) => setImage(pre => [...pre, ...e.target.files])} type="file" name="image" id="file-input" accept="image/*" hidden multiple/>
       </div>
       <button className="addproduct-btn" onClick={() => { AddProduct() }}>ADD</button>
     </div>

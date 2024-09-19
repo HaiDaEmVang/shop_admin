@@ -3,6 +3,7 @@ import Footer from "./Components/Footer/Footer";
 import Navbar from "./Components/Navbar/Navbar";
 import Admin from "./Pages/Admin";
 
+// export const backend_url = 'https://shop-server-4z3h.onrender.com';
 export const backend_url = 'http://localhost:4000';
 export const currency = '$';
 
